@@ -15,3 +15,33 @@ def test_apply_discount():
     item.pay_rate = 1
     item.apply_discount()
     assert item.price == 20.0
+
+
+def test_string_to_number():
+    assert Item.string_to_number('5') == 5
+    assert Item.string_to_number('5.0') == 5
+    assert Item.string_to_number('5.5') == 5
+
+
+def test_get_name():
+    item = Item("TestItem", 4, 5)
+    assert item.name == "TestItem"
+
+
+def test_set_name():
+    item = Item("TestItem", 4, 5)
+    item.name = "Test"
+    assert item.name == "Test"
+    item.name = "TestItem_set"
+    assert item.name == "TestItem_s"
+
+
+def test_instantiate_from_csv():
+    Item.instantiate_from_csv('items.csv')
+    assert len(Item.all) == 5
+
+
+# def test_len_task():
+#     item = Item('Телефон', 10000, 5)
+#     item.name = 'Смартфон'
+#     assert item.name == 'Смартфон'
