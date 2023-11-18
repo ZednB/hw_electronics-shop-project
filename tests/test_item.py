@@ -41,7 +41,13 @@ def test_instantiate_from_csv():
     assert len(Item.all) == 5
 
 
-# def test_len_task():
-#     item = Item('Телефон', 10000, 5)
-#     item.name = 'Смартфон'
-#     assert item.name == 'Смартфон'
+def test_repr():
+    item = Item("Телефон", 25000, 40)
+    assert repr(item) == 'Item(Телефон, 25000, 40)'
+
+
+def test_str():
+    item = Item("Телефон", 25000, 40)
+    assert str(item.name) == "Телефон"
+    item = Item("Смартфон", 25000, 40)
+    assert str(item.name) == "Смартфон"
