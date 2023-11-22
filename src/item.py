@@ -25,6 +25,11 @@ class Item:
         self.quantity = quantity
         # self.all.append(self)
 
+    def __add__(self, other):
+        if issubclass(other.__class__, self.__class__):
+            return self.quantity + other.quantity
+        return ValueError
+
     @property
     def name(self):
         return self.__name
