@@ -2,6 +2,8 @@ import csv
 
 import os
 
+from src.item_exception import InstantiateCSVError
+
 
 # noinspection PyTypeChecker
 class Item:
@@ -56,23 +58,30 @@ class Item:
         self.price *= Item.pay_rate
 
     @classmethod
-    def instantiate_from_csv(cls, data_file):
+    def instantiate_from_csv(cls, data_file: str = None) -> None:
         """
         Создает экземпляры класса Item из данных, полученных из файла items.csv.
         """
-        file_path = os.path.join(os.path.dirname(__file__), data_file)
+        if data_file is None:
+            raise FileNotFoundError("_Отсутствует файл item.csv_")
 
-        cls.all.clear()
-        with open(file_path, 'r', newline="") as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                name = row['name']
-                price = cls.string_to_number(row['price'])
-                quantity = cls.string_to_number(row['quantity'])
-                items_csv = Item(name, price, quantity)
-                items = cls.all.append(items_csv)
+        try:
+            base_path = os.path.dirname(__file__)
+            # file_path = os.path.join(os.path.dirname(__file__), data_file)
+            file_path = os.path.join(base_path, data_file)
 
-            return cls.all
+            cls.all.clear()
+            with open(file_path, 'r', newline="") as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    name = row['name']
+                    price = cls.string_to_number(row['price'])
+                    quantity = cls.string_to_number(row['quantity'])
+                    items_csv = Item(name, price, quantity)
+                    items = cls.all.append(items_csv)
+                    return cls.all
+        except KeyError:
+            raise InstantiateCSVError
 
     @staticmethod
     def string_to_number(string):
